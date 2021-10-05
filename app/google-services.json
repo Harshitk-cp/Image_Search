@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "767946243659",
+    "project_id": "image-search-b8916",
+    "storage_bucket": "image-search-b8916.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:767946243659:android:1b4ada157546d0f42157ce",
+        "android_client_info": {
+          "package_name": "com.harshit.imagesearch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "767946243659-kava0i5j4ks9a8783foo1vlo4j0ofa6a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOI1owtYm7EVe_TdPIdbVnLohhJIFouYk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "767946243659-kava0i5j4ks9a8783foo1vlo4j0ofa6a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
