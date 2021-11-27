@@ -7,11 +7,13 @@
     android:background="@color/black"
     tools:context=".MainActivity">
 
-    <ImageView
+    <com.harshit.imagesearch.ImageClickableView
         android:id="@+id/imgImage"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="100dp"
+        android:contentDescription="@null"
+        android:focusableInTouchMode="true"
         android:padding="16dp"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/txtResult"
@@ -91,6 +93,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="left" />
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="signout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:backgroundTint="@color/primary"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvProducts"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

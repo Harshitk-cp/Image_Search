@@ -18,22 +18,43 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.label.ImageLabeler
-import com.google.mlkit.vision.label.ImageLabeling
-import com.google.mlkit.vision.label.defaults.ImageLabelerOptions
 import android.content.DialogInterface
+import android.os.Environment
 import android.view.View
 import androidx.core.view.isVisible
+import com.google.cloud.vision.v1.*
+import com.google.mlkit.vision.objects.ObjectDetection
+import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
+import com.google.mlkit.vision.objects.defaults.PredefinedCategory
+import com.harshit.imagesearch.databinding.ActivityMainBinding
+
+import android.util.Base64
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import butterknife.ButterKnife
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import java.io.*
+import java.util.ArrayList
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), IProductLoadListener {
 
-    private lateinit var txtResult: TextView
+
     private lateinit var btnGallery: Button
     private lateinit var btnCamera: Button
     private lateinit var txtDisplay: TextView
     lateinit var imgImage: ImageView
     lateinit var imgDisplay: ImageView
+    lateinit var btnLogout: Button
+    lateinit var btnButtons: ConstraintLayout
+    lateinit var rvProducts: RecyclerView
+    lateinit var productLoadListener: IProductLoadListener
 
     private val CAMERA_PERMISSION_CODE = 123
     private val READ_STORAGE_PERMISSION_CODE = 123
@@ -43,25 +64,26 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
+    private lateinit var viewBinding: ActivityMainBinding
 
     lateinit var inputImage: InputImage
-    lateinit var imageLabeler: ImageLabeler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        viewBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(viewBinding.root)
 
         imgImage = findViewById(R.id.imgImage)
         imgDisplay = findViewById(R.id.imgDisplay)
-        txtResult = findViewById(R.id.txtResult)
         btnGallery = findViewById(R.id.btnGallery)
         btnCamera = findViewById(R.id.btnCamera)
         txtDisplay = findViewById(R.id.txtDisplay)
+        btnLogout = findViewById(R.id.btnLogout)
+        btnButtons = findViewById(R.id.btnButtons)
+        rvProducts = findViewById(R.id.rvProducts)
 
         imgImage.visibility = View.GONE
-        txtResult.visibility = View.GONE
-
-        imageLabeler = ImageLabeling.getClient(ImageLabelerOptions.DEFAULT_OPTIONS)
 
         cameraLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
@@ -72,10 +94,9 @@ class MainActivity : AppCompatActivity() {
                 imgImage.setImageBitmap(photo)
                 inputImage = InputImage.fromBitmap(photo, 0)
                 imgImage.visibility = View.VISIBLE
-                txtResult.visibility = View.VISIBLE
                 txtDisplay.visibility = View.INVISIBLE
                 imgDisplay.visibility = View.INVISIBLE
-                processImage()
+                setViewAndDetect(photo)
             } catch (e: Exception) {
                 Log.d(TAG, "onActivityResult: ${e.message}")
             }
@@ -89,10 +110,10 @@ class MainActivity : AppCompatActivity() {
                 inputImage = InputImage.fromFilePath(this@MainActivity, data?.data)
                 imgImage.setImageURI(data?.data)
                 imgImage.visibility = View.VISIBLE
-                txtResult.visibility = View.VISIBLE
                 imgDisplay.visibility = View.INVISIBLE
                 txtDisplay.visibility = View.INVISIBLE
-                    processImage()
+                setViewAndDetect(inputImage.bitmapInternal)
+
             } catch (e: Exception) {
 
             }
@@ -113,24 +134,131 @@ class MainActivity : AppCompatActivity() {
 
 
 
+        btnLogout.setOnClickListener {
+            AlertDialog.Builder(this@MainActivity)
+                .setTitle("Logout!")
+                .setMessage("Are you sure you want to Logout?")
+                .setCancelable(true)
+                .setNegativeButton(
+                    "No"
+                ) { dialogInterface, _ -> dialogInterface.dismiss() }
+                .setPositiveButton(
+                    "Yes"
+                ) { _, _ ->
+                    FirebaseAuth.getInstance().signOut()
+                    startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                    finish()
+                }.show()
+        }
+
+        imgImage.setOnClickListener {
+            val myintent = Intent(this@MainActivity, ProductDisplay::class.java)
+            startActivity(myintent)
+
+        }
+
+
     }
 
-    private fun processImage() {
 
-        imageLabeler.process(inputImage)
-            .addOnSuccessListener {
-                var result = ""
-                for (label in it) {
-                    result = result + " " + label.text
+
+
+
+
+    private fun setViewAndDetect(bitmap: Bitmap?) {
+        bitmap?.let {
+            // Clear the dots indicating the previous detection result
+            viewBinding.imgImage.drawDetectionResults(emptyList())
+
+            // Display the input image on the screen.
+            viewBinding.imgImage.setImageBitmap(bitmap)
+
+            // Run object detection and show the detection results.
+            runObjectDetection(bitmap)
+        }
+    }
+
+    private fun runObjectDetection(bitmap: Bitmap) {
+        //Create ML Kit's InputImage object
+        val image = InputImage.fromBitmap(bitmap, 0)
+
+        //Acquire detector object
+        val options = ObjectDetectorOptions.Builder()
+            .setDetectorMode(ObjectDetectorOptions.SINGLE_IMAGE_MODE)
+            .enableMultipleObjects()
+            .enableClassification()
+            .build()
+        val objectDetector = ObjectDetection.getClient(options)
+
+        //Feed given image to detector and setup callback
+        objectDetector.process(image)
+            .addOnSuccessListener { results ->
+                //Keep only the FASHION_GOOD objects
+                val filteredResults = results.filter { result ->
+                    result.labels.indexOfFirst { it.text == PredefinedCategory.FASHION_GOOD } != -1
                 }
 
-                txtResult.text = result
+                //Visualize the detection result
+                runOnUiThread {
+                    viewBinding.imgImage.drawDetectionResults(filteredResults)
+                }
 
-            }.addOnFailureListener{
-                Log.d(TAG, "processImage: ${it.message}")
+            }
+            .addOnFailureListener {
+                //Task failed with an exception
+                Log.e(TAG, it.message.toString())
             }
 
     }
+
+    private fun startProductImageSearch(objectImage: Bitmap) {
+        try {
+            // Create file based Bitmap. We use PNG to preserve the image quality
+            val savedFile = createImageFile(ProductSearchActivity.CROPPED_IMAGE_FILE_NAME)
+            objectImage.compress(Bitmap.CompressFormat.JPEG, 100, FileOutputStream(savedFile))
+
+
+
+            // Start the product search activity (using Vision Product Search API.).
+            startActivity(
+                Intent(
+                    this,
+                    ProductSearchActivity::class.java
+                ).apply {
+                    // As the size limit of a bundle is 1MB, we need to save the bitmap to a file
+                    // and reload it in the other activity to support large query images.
+                    putExtra(
+                        ProductSearchActivity.REQUEST_TARGET_IMAGE_PATH,
+                        savedFile.absolutePath
+                    )
+                })
+        } catch (e: Exception) {
+            // IO Exception, Out Of memory ....
+            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+            Log.e(TAG, "Error starting the product image search activity.", e)
+        }
+    }
+
+    private fun convertBitmapToBase64(bitmap: Bitmap): String {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        val byteArray: ByteArray = byteArrayOutputStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+    }
+
+
+
+    @Throws(IOException::class)
+    private fun createImageFile(fileName: String): File {
+        // Create an image file name
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            fileName, /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        )
+    }
+
 
 
     private fun checkPermission(permission:String, requestCode: Int){
@@ -139,16 +267,10 @@ class MainActivity : AppCompatActivity() {
 
             showMessageOKCancel(
                 "You need to allow camera usage"
-            ) { dialog, which ->
+            ) { _, _ ->
                 ActivityCompat.requestPermissions(this@MainActivity, arrayOf(permission), requestCode)
             }
-
-
-
-        }else(
-                null
-        )
-
+        }
     }
 
     private fun showMessageOKCancel(message: String, okListener: DialogInterface.OnClickListener) {
@@ -199,9 +321,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if(txtResult.isVisible || imgImage.isVisible){ 
+        if(imgImage.isVisible){
             imgImage.visibility = View.GONE
-            txtResult.visibility = View.GONE
             txtDisplay.visibility = View.VISIBLE
             imgDisplay.visibility = View.VISIBLE
         }else{
@@ -215,6 +336,15 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
     }
 
+    override fun onProductLoadSuccess(productModelList: List<ProductModel?>?) {
+
+        val productAdapter = productAdapter(this, productModelList as List<ProductModel>)
+        rvProducts.adapter = productAdapter
+    }
+
+    override fun onProductLoadFailed(message: String?) {
+        TODO("Not yet implemented")
+    }
 
 
 }
