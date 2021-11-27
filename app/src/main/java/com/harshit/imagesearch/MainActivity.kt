@@ -30,17 +30,11 @@ import com.harshit.imagesearch.databinding.ActivityMainBinding
 
 import android.util.Base64
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import butterknife.ButterKnife
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import java.io.*
-import java.util.ArrayList
+import java.util.HashMap
 
 
 class MainActivity : AppCompatActivity(), IProductLoadListener {
@@ -84,13 +78,15 @@ class MainActivity : AppCompatActivity(), IProductLoadListener {
         rvProducts = findViewById(R.id.rvProducts)
 
         imgImage.visibility = View.GONE
-
         cameraLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
             val data = result?.data
             try {
                 val photo = data?.extras?.get("data") as Bitmap
+                val myCameraIntent = Intent(this@MainActivity, ProductDisplay::class.java)
+                myCameraIntent.putExtra("CameraImage", photo)
+                startActivity(myCameraIntent)
                 imgImage.setImageBitmap(photo)
                 inputImage = InputImage.fromBitmap(photo, 0)
                 imgImage.visibility = View.VISIBLE
@@ -107,6 +103,9 @@ class MainActivity : AppCompatActivity(), IProductLoadListener {
         ) { result ->
             val data = result?.data
             try {
+                val myGalleryIntent = Intent(this@MainActivity, ProductDisplay::class.java)
+                myGalleryIntent.putExtra("GalleryImage", data?.data)
+                startActivity(myGalleryIntent)
                 inputImage = InputImage.fromFilePath(this@MainActivity, data?.data)
                 imgImage.setImageURI(data?.data)
                 imgImage.visibility = View.VISIBLE
@@ -151,16 +150,8 @@ class MainActivity : AppCompatActivity(), IProductLoadListener {
                 }.show()
         }
 
-        imgImage.setOnClickListener {
-            val myintent = Intent(this@MainActivity, ProductDisplay::class.java)
-            startActivity(myintent)
-
-        }
-
 
     }
-
-
 
 
 

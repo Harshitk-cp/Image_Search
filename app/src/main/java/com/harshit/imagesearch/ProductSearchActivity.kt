@@ -61,7 +61,7 @@ class ProductSearchActivity : AppCompatActivity() {
         viewBinding = ActivityProductSearchBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
         viewBinding.progressBar2.visibility = View.VISIBLE
-        btnSearch = findViewById(R.id.btnSearch)
+        btnSearch = findViewById(R.id.txtSuggestions)
         btnSearch.setOnClickListener {
             // Display progress
             (viewBinding.ivQueryImage2.drawable as? BitmapDrawable)?.bitmap?.let{

@@ -4,14 +4,18 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
-import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
 import com.bumptech.glide.Glide
-import java.lang.StringBuilder
+import com.google.common.eventbus.EventBus
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
+import java.lang.Exception
+import java.util.Locale.getDefault
 
 
 class productAdapter(private val context: Context, productModelList: List<ProductModel>) :
@@ -30,10 +34,46 @@ class productAdapter(private val context: Context, productModelList: List<Produc
         val currentItem = productModelList[position]
         Glide.with(holder.imgProduct).load(currentItem.imgUrl).into(holder.imgProduct)
 
+        holder.btnAddToCart.setOnClickListener(View.OnClickListener {
+            addToCart(productModelList[position])
+        })
 
 
 
+    }
 
+    private fun addToCart(productModel: ProductModel) {
+        val userFavs = FirebaseDatabase
+            .getInstance()
+            .getReference("cart")
+            .child(FirebaseAuth.getInstance().currentUser!!.uid)
+        userFavs.child(productModel.key!!)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        Toast.makeText(context, "Product already in cart", Toast.LENGTH_SHORT).show()
+                    } else {
+                        val cartModel = CartModel()
+                        cartModel.key = productModel.key
+
+                        cartModel.imgUrl = productModel.imgUrl
+                        userFavs.child(productModel.key!!)
+                            .setValue(cartModel)
+                            .addOnSuccessListener { aVoid: Void? ->
+
+                                    Toast.makeText(context, "Item added to cart", Toast.LENGTH_SHORT).show()
+                            }
+                            .addOnFailureListener { e: Exception ->
+                                Toast.makeText(context, "Couldn't add to Cart", Toast.LENGTH_SHORT).show()
+
+                            }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(context, "Database error", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
     override fun getItemCount(): Int {
@@ -43,6 +83,7 @@ class productAdapter(private val context: Context, productModelList: List<Produc
     inner class MyProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val imgProduct: ImageView = itemView.findViewById(R.id.imgProduct1)
+        val btnAddToCart: Button = itemView.findViewById(R.id.btnAddToCart)
 
 
         var unbinder: Unbinder
