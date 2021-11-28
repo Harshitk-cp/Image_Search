@@ -10,6 +10,7 @@ import android.os.Looper
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
@@ -28,6 +29,7 @@ class ProductDisplay : AppCompatActivity(), IProductLoadListener {
     lateinit var productLoadListener: IProductLoadListener
     lateinit var iv_query_image: ImageView
     lateinit var progressBar: ProgressBar
+    lateinit var txtProceedToTry: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +37,7 @@ class ProductDisplay : AppCompatActivity(), IProductLoadListener {
         rvProductMain = findViewById(R.id.rvProductMain)
         iv_query_image = findViewById(R.id.iv_query_image)
         progressBar = findViewById(R.id.progressBar)
+        txtProceedToTry = findViewById(R.id.txtProceedToTry)
 
         progressBar.visibility = View.VISIBLE
 
@@ -62,6 +65,10 @@ class ProductDisplay : AppCompatActivity(), IProductLoadListener {
         if (b != null) {
             val j = b["CameraImage"] as Bitmap?
             iv_query_image.setImageBitmap(j)
+        }
+
+        txtProceedToTry.setOnClickListener {
+            startActivity(Intent(this@ProductDisplay, CartActivity::class.java))
         }
 
 

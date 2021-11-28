@@ -40,6 +40,8 @@ class productAdapter(private val context: Context, productModelList: List<Produc
 
 
 
+
+
     }
 
     private fun addToCart(productModel: ProductModel) {
@@ -84,6 +86,7 @@ class productAdapter(private val context: Context, productModelList: List<Produc
 
         val imgProduct: ImageView = itemView.findViewById(R.id.imgProduct1)
         val btnAddToCart: Button = itemView.findViewById(R.id.btnAddToCart)
+
 
 
         var unbinder: Unbinder
