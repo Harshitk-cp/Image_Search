@@ -1,29 +1,23 @@
-package com.harshit.imagesearch
+package com.harshit.imagesearch.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.ButterKnife
 import butterknife.Unbinder
 import com.bumptech.glide.Glide
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.common.eventbus.EventBus
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import java.lang.Exception
-import java.net.CookieHandler.getDefault
+import com.harshit.imagesearch.R
+import com.harshit.imagesearch.activity.TryOnActivity
+import com.harshit.imagesearch.activity.UserImageActivity
+import com.harshit.imagesearch.models.CartModel
 
 class cartAdapter(private val context: Context, cartModelList: List<CartModel>) :
     RecyclerView.Adapter<cartAdapter.MyCartViewHolder>() {
@@ -49,8 +43,8 @@ class cartAdapter(private val context: Context, cartModelList: List<CartModel>) 
 
         holder.btnTryOn.setOnClickListener {
             val photo = currentItem.imgUrl
-            val tryOnIntent = Intent(context, TryOnActivity::class.java)
-            tryOnIntent.putExtra("TryOnImage", photo)
+            val tryOnIntent = Intent(context, UserImageActivity::class.java)
+            tryOnIntent.putExtra("userPassImage", photo)
             context.startActivity(tryOnIntent)
         }
 

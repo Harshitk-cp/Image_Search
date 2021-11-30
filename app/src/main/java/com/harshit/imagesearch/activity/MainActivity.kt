@@ -1,4 +1,4 @@
-package com.harshit.imagesearch
+package com.harshit.imagesearch.activity
 
 import android.Manifest
 import android.content.Intent
@@ -33,11 +33,15 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.harshit.imagesearch.*
+import com.harshit.imagesearch.R
+import com.harshit.imagesearch.adapter.productAdapter
+import com.harshit.imagesearch.listeners.IProductLoadListener
+import com.harshit.imagesearch.models.ProductModel
 import java.io.*
-import java.util.HashMap
 
 
-class MainActivity : AppCompatActivity(), IProductLoadListener {
+class MainActivity : AppCompatActivity() {
 
 
     private lateinit var btnGallery: Button
@@ -46,9 +50,6 @@ class MainActivity : AppCompatActivity(), IProductLoadListener {
     lateinit var imgImage: ImageView
     lateinit var imgDisplay: ImageView
     lateinit var btnLogout: Button
-    lateinit var btnButtons: ConstraintLayout
-    lateinit var rvProducts: RecyclerView
-    lateinit var productLoadListener: IProductLoadListener
 
     private val CAMERA_PERMISSION_CODE = 123
     private val READ_STORAGE_PERMISSION_CODE = 123
@@ -70,12 +71,11 @@ class MainActivity : AppCompatActivity(), IProductLoadListener {
 
         imgImage = findViewById(R.id.imgImage)
         imgDisplay = findViewById(R.id.imgDisplay)
-        btnGallery = findViewById(R.id.btnGallery)
-        btnCamera = findViewById(R.id.btnCamera)
+        btnGallery = findViewById(R.id.btnUserGallery)
+        btnCamera = findViewById(R.id.btnUserCamera)
         txtDisplay = findViewById(R.id.txtDisplay)
         btnLogout = findViewById(R.id.btnLogout)
-        btnButtons = findViewById(R.id.btnButtons)
-        rvProducts = findViewById(R.id.rvProducts)
+
 
         imgImage.visibility = View.GONE
         cameraLauncher = registerForActivityResult(
@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity(), IProductLoadListener {
             val data = result?.data
             try {
                 val photo = data?.extras?.get("data") as Bitmap
-                val myCameraIntent = Intent(this@MainActivity, ProductDisplay::class.java)
+                val myCameraIntent = Intent(this@MainActivity, ProductDisplayActivity::class.java)
                 myCameraIntent.putExtra("CameraImage", photo)
                 startActivity(myCameraIntent)
                 imgImage.setImageBitmap(photo)
@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity(), IProductLoadListener {
         ) { result ->
             val data = result?.data
             try {
-                val myGalleryIntent = Intent(this@MainActivity, ProductDisplay::class.java)
+                val myGalleryIntent = Intent(this@MainActivity, ProductDisplayActivity::class.java)
                 myGalleryIntent.putExtra("GalleryImage", data?.data)
                 startActivity(myGalleryIntent)
                 inputImage = InputImage.fromFilePath(this@MainActivity, data?.data)
@@ -327,15 +327,6 @@ class MainActivity : AppCompatActivity(), IProductLoadListener {
         super.onStart()
     }
 
-    override fun onProductLoadSuccess(productModelList: List<ProductModel?>?) {
-
-        val productAdapter = productAdapter(this, productModelList as List<ProductModel>)
-        rvProducts.adapter = productAdapter
-    }
-
-    override fun onProductLoadFailed(message: String?) {
-        TODO("Not yet implemented")
-    }
 
 
 }

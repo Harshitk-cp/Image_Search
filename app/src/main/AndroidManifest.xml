@@ -15,21 +15,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ImageSearch">
         <activity
-            android:name=".TryOnActivity"
+            android:name=".activity.UserImageActivity"
             android:exported="false" />
         <activity
-            android:name=".CartActivity"
+            android:name=".activity.TryOnActivity"
             android:exported="false" />
         <activity
-            android:name=".OptionActivity"
+            android:name=".activity.CartActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.ProductDisplayActivity"
             android:exported="false" />
         <activity
-            android:name=".ProductDisplay"
+            android:name=".activity.RegisterActivity"
             android:exported="false" />
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="false" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,7 +41,7 @@
             android:name=".ProductSearchActivity"
             android:enabled="true"
             android:exported="false" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".activity.MainActivity" />
 
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"

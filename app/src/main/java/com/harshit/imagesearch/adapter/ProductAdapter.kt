@@ -1,4 +1,4 @@
-package com.harshit.imagesearch
+package com.harshit.imagesearch.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,11 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import butterknife.ButterKnife
 import butterknife.Unbinder
 import com.bumptech.glide.Glide
-import com.google.common.eventbus.EventBus
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.harshit.imagesearch.R
+import com.harshit.imagesearch.models.CartModel
+import com.harshit.imagesearch.models.ProductModel
 import java.lang.Exception
-import java.util.Locale.getDefault
 
 
 class productAdapter(private val context: Context, productModelList: List<ProductModel>) :

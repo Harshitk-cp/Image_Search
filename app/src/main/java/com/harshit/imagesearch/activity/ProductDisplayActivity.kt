@@ -1,12 +1,10 @@
-package com.harshit.imagesearch
+package com.harshit.imagesearch.activity
 
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -14,16 +12,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.ButterKnife
 import com.bumptech.glide.Glide
 import com.google.firebase.database.*
-import com.google.mlkit.vision.common.InputImage
-import java.net.URI
+import com.harshit.imagesearch.listeners.IProductLoadListener
+import com.harshit.imagesearch.R
+import com.harshit.imagesearch.adapter.productAdapter
+import com.harshit.imagesearch.models.ProductModel
 import java.util.ArrayList
 
-class ProductDisplay : AppCompatActivity(), IProductLoadListener {
+class ProductDisplayActivity : AppCompatActivity(), IProductLoadListener {
 
     lateinit var rvProductMain: RecyclerView
     lateinit var productLoadListener: IProductLoadListener
@@ -50,9 +49,6 @@ class ProductDisplay : AppCompatActivity(), IProductLoadListener {
         val gettingGalleryImage = intent
         val a = gettingGalleryImage.extras
 
-
-
-
         if (a != null) {
             val i = a["GalleryImage"] as Uri?
             val imgUri = Uri.parse(i.toString())
@@ -68,7 +64,7 @@ class ProductDisplay : AppCompatActivity(), IProductLoadListener {
         }
 
         txtProceedToTry.setOnClickListener {
-            startActivity(Intent(this@ProductDisplay, CartActivity::class.java))
+            startActivity(Intent(this@ProductDisplayActivity, CartActivity::class.java))
         }
 
 

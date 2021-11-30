@@ -18,25 +18,18 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.api.client.util.Lists
 import com.google.protobuf.ByteString
 import java.io.ByteArrayOutputStream
-import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 import java.util.ArrayList
 
-import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.vision.v1.*
 import kotlin.Throws
-import com.google.cloud.storage.Bucket;
-import com.google.cloud.storage.BucketInfo;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
+import com.harshit.imagesearch.services.ProductSearchAPIClient
 import java.lang.Exception
 
 
@@ -120,7 +113,6 @@ class ProductSearchActivity : AppCompatActivity() {
                         val annotation = res.webDetection
                         println("Entity:Id:Score")
                         println("===============")
-                        println("helo")
                         for (entity in annotation.webEntitiesList) {
                             println(
                                 entity.description + " : " + entity.entityId + " : " + entity.score

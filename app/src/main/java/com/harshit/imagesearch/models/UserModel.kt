@@ -1,4 +1,4 @@
-package com.harshit.imagesearch
+package com.harshit.imagesearch.models
 
 class UserModel {
     var key: String? = null

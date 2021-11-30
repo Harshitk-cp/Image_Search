@@ -1,4 +1,6 @@
-package com.harshit.imagesearch
+package com.harshit.imagesearch.listeners
+
+import com.harshit.imagesearch.models.CartModel
 
 interface ICartLoadListener {
 

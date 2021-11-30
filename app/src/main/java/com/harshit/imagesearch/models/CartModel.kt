@@ -1,6 +1,6 @@
-package com.harshit.imagesearch
+package com.harshit.imagesearch.models
 
-data class ProductModel(
+data class CartModel(
     var key: String ?= null,
     var imgUrl : String ?= null
 )

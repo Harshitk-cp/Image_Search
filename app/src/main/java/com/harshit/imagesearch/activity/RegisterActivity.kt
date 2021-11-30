@@ -1,4 +1,4 @@
-package com.harshit.imagesearch
+package com.harshit.imagesearch.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -16,7 +16,8 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-
+import com.harshit.imagesearch.R
+import com.harshit.imagesearch.models.UserModel
 
 
 class RegisterActivity : AppCompatActivity() {
