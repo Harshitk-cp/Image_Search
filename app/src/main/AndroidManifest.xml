@@ -15,6 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ImageSearch">
         <activity
+            android:name=".activity.DashboardActivity"
+            android:exported="true" >
+
+
+        </activity>
+        <activity
             android:name=".activity.UserImageActivity"
             android:exported="false" />
         <activity
@@ -23,7 +29,6 @@
         <activity
             android:name=".activity.CartActivity"
             android:exported="false" />
-
         <activity
             android:name=".activity.ProductDisplayActivity"
             android:exported="false" />
@@ -31,11 +36,13 @@
             android:name=".activity.RegisterActivity"
             android:exported="false" />
         <activity android:name=".activity.LoginActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".ProductSearchActivity"

@@ -26,7 +26,6 @@
         android:layout_height="match_parent"
         android:src="@drawable/cloth_demo"
 
-        android:layout_margin="30dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

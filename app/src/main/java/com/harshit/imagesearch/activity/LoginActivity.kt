@@ -69,7 +69,7 @@ class LoginActivity : AppCompatActivity() {
                     OnCompleteListener<AuthResult?> { task ->
                         if (task.isSuccessful) {
                             Toast.makeText(this@LoginActivity, "Welcome!", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                            startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
                             finish()
                         } else {
                             Toast.makeText(
@@ -88,7 +88,8 @@ class LoginActivity : AppCompatActivity() {
         super.onStart()
         val user: FirebaseUser? = mAuth?.currentUser
         if (user != null) {
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
+            finish()
         }
     }
 

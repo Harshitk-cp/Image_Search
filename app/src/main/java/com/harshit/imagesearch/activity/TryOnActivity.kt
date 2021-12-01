@@ -3,19 +3,20 @@ package com.harshit.imagesearch.activity
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
-import android.view.View
 import android.view.View.OnTouchListener
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.harshit.imagesearch.R
 
 class TryOnActivity : AppCompatActivity() {
 
-    lateinit var tryOnImage: ImageView
-    lateinit var imgUser: ImageView
+    private lateinit var tryOnImage: ImageView
+    private lateinit var imgUser: ImageView
+
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +24,7 @@ class TryOnActivity : AppCompatActivity() {
 
         tryOnImage = findViewById(R.id.tryOnImage)
         imgUser = findViewById(R.id.imgUser)
+
 
         val gettingTryOnImage = intent
         val a = gettingTryOnImage.extras
@@ -50,7 +52,7 @@ class TryOnActivity : AppCompatActivity() {
         }
 
 
-        tryOnImage.setOnTouchListener(OnTouchListener { view, event ->
+        tryOnImage.setOnTouchListener(OnTouchListener { _, event ->
             var xDown = 0f
             var yDown = 0f
             when (event.actionMasked) {
@@ -59,21 +61,21 @@ class TryOnActivity : AppCompatActivity() {
                     yDown = event.y
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    val movedX: Float
-                    val movedY: Float
-                    movedX = event.x
-                    movedY = event.y
+                    val movedX: Float = event.x
+                    val movedY: Float = event.y
                     val distanceX = movedX - xDown
                     val distanceY = movedY - yDown
-                    tryOnImage.setX(tryOnImage.getX() + distanceX)
-                    tryOnImage.setY(tryOnImage.getY() + distanceY)
+                    tryOnImage.x = tryOnImage.x + distanceX
+                    tryOnImage.y = tryOnImage.y + distanceY
 
-                    xDown = movedX
+                    xDown - movedX
                     yDown - movedY
                 }
             }
             true
         })
+
+
 
     }
 }

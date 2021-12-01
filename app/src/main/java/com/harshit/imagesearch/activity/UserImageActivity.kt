@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,6 +20,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.google.mlkit.vision.common.InputImage
 import com.harshit.imagesearch.R
@@ -29,6 +31,8 @@ class UserImageActivity : AppCompatActivity() {
     private lateinit var btnUserCamera: Button
     lateinit var imgUserImage: ImageView
     lateinit var imgPassProduct: ImageView
+    private lateinit var txtUserDisplay: TextView
+    lateinit var imgUserDisplay: ImageView
 
     private val CAMERA_PERMISSION_CODE = 123
     private val READ_STORAGE_PERMISSION_CODE = 123
@@ -47,6 +51,10 @@ class UserImageActivity : AppCompatActivity() {
         btnUserCamera = findViewById(R.id.btnUserCamera)
         imgUserImage = findViewById(R.id.imgUserImage)
         imgPassProduct = findViewById(R.id.imgPassProduct)
+        txtUserDisplay = findViewById(R.id.txtUserDisplay)
+        imgUserDisplay = findViewById(R.id.imgUserDisplay)
+
+        imgUserImage.visibility = View.GONE
 
         val gettingTryOnImage = intent
         val a = gettingTryOnImage.extras
@@ -68,6 +76,9 @@ class UserImageActivity : AppCompatActivity() {
 
                 startActivity(myCameraIntent)
                 imgUserImage.setImageBitmap(photo)
+                imgUserImage.visibility = View.VISIBLE
+                imgUserDisplay.visibility = View.INVISIBLE
+                txtUserDisplay.visibility = View.INVISIBLE
             } catch (e: Exception) {
                 Log.d(TAG, "onActivityResult: ${e.message}")
             }
@@ -83,6 +94,9 @@ class UserImageActivity : AppCompatActivity() {
                 myGalleryIntent.putExtra("userPassImage", imgPassProduct.drawable.toBitmap())
                 startActivity(myGalleryIntent)
                 imgUserImage.setImageURI(data?.data)
+                imgUserImage.visibility = View.VISIBLE
+                imgUserDisplay.visibility = View.INVISIBLE
+                txtUserDisplay.visibility = View.INVISIBLE
             } catch (e: Exception) {
 
             }
@@ -159,6 +173,16 @@ class UserImageActivity : AppCompatActivity() {
 
         }
 
+    }
+
+    override fun onBackPressed() {
+        if(imgUserImage.isVisible){
+            imgUserImage.visibility = View.GONE
+            txtUserDisplay.visibility = View.VISIBLE
+            imgUserDisplay.visibility = View.VISIBLE
+        }else{
+            super.onBackPressed()
+        }
     }
 
     override fun onStart() {
