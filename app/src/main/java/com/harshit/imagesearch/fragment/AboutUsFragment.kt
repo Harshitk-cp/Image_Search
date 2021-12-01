@@ -1,4 +1,4 @@
-package com.harshit.imagesearch.activity
+package com.harshit.imagesearch.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

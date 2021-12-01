@@ -13,6 +13,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.harshit.imagesearch.R
+import com.harshit.imagesearch.fragment.AboutUsFragment
+import com.harshit.imagesearch.fragment.FAQsFragment
 
 class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
