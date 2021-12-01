@@ -52,7 +52,6 @@
         app:layout_constraintTop_toBottomOf="@+id/etRegisterEmail" />
 
 
-
     <EditText
         android:id="@+id/etRegisterPassword"
         android:layout_width="0dp"

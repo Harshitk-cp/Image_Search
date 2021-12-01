@@ -2,8 +2,11 @@ package com.harshit.imagesearch.activity
 
 import android.content.DialogInterface
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -12,6 +15,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.harshit.imagesearch.R
 import com.harshit.imagesearch.fragment.AboutUsFragment
 import com.harshit.imagesearch.fragment.FAQsFragment
@@ -93,6 +97,46 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             HomeFragment()
         ).commit()
         supportActionBar!!.setTitle("Home")
+    }
+
+    override fun onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START)
+        } else {
+            val fragment = this.supportFragmentManager.findFragmentById(R.id.fragment_container)
+            if (fragment is HomeFragment) {
+                finish()
+            } else {
+                openHome()
+            }
+        }
+    }
+
+    override fun onResume() {
+        isOnline()
+        val user = mAuth.currentUser
+        if (user == null) {
+            startActivity(Intent(this@DashboardActivity, LoginActivity::class.java))
+        }
+        super.onResume()
+    }
+
+    fun isOnline(): Boolean {
+        val conMgr =
+            applicationContext.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val netInfo = conMgr.activeNetworkInfo
+        if (netInfo == null || !netInfo.isConnected || !netInfo.isAvailable) {
+            AlertDialog.Builder(this@DashboardActivity)
+                .setTitle("No Internet Connection!")
+                .setMessage("Please Connect to Internet..")
+                .setCancelable(true)
+                .setPositiveButton(
+                    "Ok"
+                ) { dialog, which -> this@DashboardActivity.startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS)) }
+                .show()
+            return false
+        }
+        return true
     }
 
 }

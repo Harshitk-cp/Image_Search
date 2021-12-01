@@ -13,6 +13,8 @@
         <entry key="app/src/main/res/drawable-v24/ic_baseline_exit_to_app_24.xml" value="0.2916666666666667" />
         <entry key="app/src/main/res/drawable-v24/ic_baseline_home_24.xml" value="0.2916666666666667" />
         <entry key="app/src/main/res/drawable-v24/ic_baseline_person_24.xml" value="0.2916666666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.321025641025641" />
+        <entry key="app/src/main/res/drawable/ic_baseline_phone_24.xml" value="0.321025641025641" />
         <entry key="app/src/main/res/layout-w1240dp/activity_product_display.xml" value="0.19912985274431058" />
         <entry key="app/src/main/res/layout-w1240dp/activity_product_display_main.xml" value="0.10776439089692101" />
         <entry key="app/src/main/res/layout-w1240dp/activity_product_search.xml" value="0.19912985274431058" />
@@ -32,6 +34,7 @@
         <entry key="app/src/main/res/layout/fragment_about_us.xml" value="0.29583333333333334" />
         <entry key="app/src/main/res/layout/fragment_f_a_qs.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.29583333333333334" />
+        <entry key="app/src/main/res/layout/item_product.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layout/nav_header.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/product_list_item_design.xml" value="0.25" />
         <entry key="app/src/main/res/menu/drawer_menu.xml" value="0.3098958333333333" />

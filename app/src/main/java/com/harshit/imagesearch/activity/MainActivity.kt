@@ -49,7 +49,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var txtDisplay: TextView
     lateinit var imgImage: ImageView
     lateinit var imgDisplay: ImageView
-    lateinit var btnLogout: Button
 
     private val CAMERA_PERMISSION_CODE = 123
     private val READ_STORAGE_PERMISSION_CODE = 123
@@ -74,7 +73,6 @@ class MainActivity : AppCompatActivity() {
         btnGallery = findViewById(R.id.btnUserGallery)
         btnCamera = findViewById(R.id.btnUserCamera)
         txtDisplay = findViewById(R.id.txtDisplay)
-        btnLogout = findViewById(R.id.btnLogout)
 
 
         imgImage.visibility = View.GONE
@@ -132,23 +130,6 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
-        btnLogout.setOnClickListener {
-            AlertDialog.Builder(this@MainActivity)
-                .setTitle("Logout!")
-                .setMessage("Are you sure you want to Logout?")
-                .setCancelable(true)
-                .setNegativeButton(
-                    "No"
-                ) { dialogInterface, _ -> dialogInterface.dismiss() }
-                .setPositiveButton(
-                    "Yes"
-                ) { _, _ ->
-                    FirebaseAuth.getInstance().signOut()
-                    startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-                    finish()
-                }.show()
-        }
 
 
     }
