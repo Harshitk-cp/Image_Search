@@ -23,7 +23,6 @@ import com.harshit.imagesearch.fragment.FAQsFragment
 class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
-    private lateinit var actionBarToggle: ActionBarDrawerToggle
     private lateinit var drawer: DrawerLayout
     private lateinit var navigationView: NavigationView
     private lateinit var mAuth: FirebaseAuth
