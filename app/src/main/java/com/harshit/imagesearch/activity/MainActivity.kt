@@ -139,13 +139,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setViewAndDetect(bitmap: Bitmap?) {
         bitmap?.let {
-            // Clear the dots indicating the previous detection result
             viewBinding.imgImage.drawDetectionResults(emptyList())
-
-            // Display the input image on the screen.
             viewBinding.imgImage.setImageBitmap(bitmap)
-
-            // Run object detection and show the detection results.
             runObjectDetection(bitmap)
         }
     }
@@ -173,11 +168,12 @@ class MainActivity : AppCompatActivity() {
                 //Visualize the detection result
                 runOnUiThread {
                     viewBinding.imgImage.drawDetectionResults(filteredResults)
+
                 }
 
             }
             .addOnFailureListener {
-                //Task failed with an exception
+
                 Log.e(TAG, it.message.toString())
             }
 

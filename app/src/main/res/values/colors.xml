@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="light">#c1d5e0</color>
-    <color name="primary">#90a4ae</color>
-    <color name="dark">#62757f</color>
+    <color name="light">#A4D0EF</color>
+    <color name="primary">#3b8af2</color>
+    <color name="dark">#106eea</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>

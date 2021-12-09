@@ -68,8 +68,10 @@
             android:id="@+id/btnUserGallery"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
             android:padding="16dp"
             android:text="Gallery"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/btnUserCamera" />
@@ -78,8 +80,10 @@
             android:id="@+id/btnUserCamera"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
             android:padding="16dp"
             android:text="Camera"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/btnUserGallery"
             app:layout_constraintRight_toRightOf="parent" />
