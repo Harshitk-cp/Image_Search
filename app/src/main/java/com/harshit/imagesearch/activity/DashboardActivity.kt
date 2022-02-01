@@ -17,7 +17,6 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.harshit.imagesearch.R
-import com.harshit.imagesearch.fragment.AboutUsFragment
 import com.harshit.imagesearch.fragment.FAQsFragment
 
 class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -60,13 +59,6 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     FAQsFragment()
                 ).commit()
                 supportActionBar!!.setTitle("FAQs")
-            }
-            R.id.nav_about_us -> {
-                supportFragmentManager.beginTransaction().replace(
-                    R.id.fragment_container,
-                    AboutUsFragment()
-                ).commit()
-                supportActionBar!!.setTitle("About Us")
             }
             R.id.nav_logout -> AlertDialog.Builder(this@DashboardActivity)
                 .setTitle("Logout!")
